@@ -1,20 +1,100 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# АНО ПБС «Экосистема учёта»
 
-# Run and deploy your AI Studio app
+Профессиональное бухгалтерское сопровождение и комплексная поддержка бизнеса в Новороссийске.
 
-This contains everything you need to run your app locally.
+## О проекте
 
-View your app in AI Studio: https://ai.studio/apps/drive/1t6sOo6IOX3Efu60Jyt_P54_Hv-swbdsH
+Официальный сайт автономной некоммерческой организации по бухгалтерскому сопровождению «Экосистема учёта». Мы предоставляем полный спектр бухгалтерских услуг для малого и среднего бизнеса, а также специальные программы поддержки для ветеранов.
 
-## Run Locally
+### Основные разделы
 
-**Prerequisites:**  Node.js
+- **Главная** - информация о компании и ключевых услугах
+- **О нас** - история, миссия и ценности организации
+- **Услуги** - полный перечень бухгалтерских услуг
+- **Ветераны** - специальные программы поддержки
+- **Обучение** - образовательные программы для бизнеса
+- **Контакты** - связь с нами
 
+### Админ-панель
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Управление контентом сайта (услуги, новости, команда, FAQ, клиенты).
+
+## Технологии
+
+- React 19 + TypeScript
+- Vite (сборка)
+- Tailwind CSS
+- React Router (HashRouter для совместимости с Netlify)
+- Lucide React (иконки)
+
+## Запуск локально
+
+### Требования
+
+- Node.js 18+
+- npm
+
+### Установка и запуск
+
+```bash
+# Установка зависимостей
+npm install
+
+# Запуск dev-сервера
+npm run dev
+
+# Сборка для продакшена
+npm run build
+
+# Предпросмотр сборки
+npm run preview
+```
+
+## Деплой на Netlify
+
+### Автоматический деплой
+
+1. Подключите репозиторий к Netlify
+2. Netlify автоматически определит настройки из `netlify.toml`
+3. Сайт будет доступен по адресу `https://your-site.netlify.app`
+
+### Ручной деплой
+
+```bash
+# Установка Netlify CLI
+npm install -g netlify-cli
+
+# Деплой директории dist
+netlify deploy --prod --dir=dist
+```
+
+## Структура проекта
+
+```
+├── components/     # Переиспользуемые компоненты
+├── context/        # React Context (Auth, Data)
+├── pages/         # Страницы приложения
+│   ├── admin/     # Админ-панель
+│   ├── About.tsx
+│   ├── Contacts.tsx
+│   ├── Education.tsx
+│   ├── Home.tsx
+│   ├── Services.tsx
+│   └── Veterans.tsx
+├── App.tsx        # Главный компонент с роутингом
+├── index.tsx     # Точка входа
+├── vite.config.ts
+└── netlify.toml   # Конфигурация Netlify
+```
+
+## Конфигурация Netlify
+
+Файл `netlify.toml` настроен для:
+- Использования Node.js 18
+- Сборки командой `npm run build`
+- Публикации директории `dist`
+- Обработки SPA-роутинга (все запросы → index.html)
+
+## Лицензия
+
+© АНО ПБС «Экосистема учёта»
