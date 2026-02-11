@@ -3,9 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>АНО ПБС «Экосистема учёта» | Бухгалтерские услуги в Новороссийске</title>
     <meta name="description" content="Профессиональное бухгалтерское сопровождение, регистрация бизнеса и поддержка ветеранов в Новороссийске. АНО ПБС «Экосистема учёта»." />
     <meta name="keywords" content="бухгалтерия, регистрация ИП, регистрация ООО, Новороссийск, поддержка ветеранов, обучение бизнесу, налоговые консультации" />
+    <meta name="author" content="АНО ПБС «Экосистема учёта»" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://ecosystem-pbs.ru/" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -13,6 +17,8 @@
     <meta property="og:title" content="АНО ПБС «Экосистема учёта»" />
     <meta property="og:description" content="Комплексная поддержка бизнеса: от регистрации до сдачи отчетности. Специальные программы для ветеранов." />
     <meta property="og:image" content="https://picsum.photos/1200/630?random=1" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:site_name" content="АНО ПБС «Экосистема учёта»" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
@@ -21,78 +27,41 @@
     <meta property="twitter:description" content="Комплексная поддержка бизнеса: от регистрации до сдачи отчетности." />
     <meta property="twitter:image" content="https://picsum.photos/1200/630?random=1" />
 
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0284c7" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Экосистема учёта" />
+    
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230284c7'><path d='M3 21l18 0' /><path d='M5 21v-14l8 -4l8 4v14' /><path d='M9 21v-8a3 3 0 0 1 6 0v8' /></svg>" />
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              brand: {
-                50: '#f0f9ff',
-                100: '#e0f2fe',
-                500: '#0ea5e9', // Sky blue
-                600: '#0284c7', // Primary Blue
-                700: '#0369a1', // Darker Blue
-                800: '#075985', // Text Blue
-                900: '#0c4a6e',
-              }
-            },
-            animation: {
-              'fade-in': 'fadeIn 0.3s ease-in-out',
-              'fade-in-down': 'fadeInDown 0.3s ease-in-out',
-              'slide-up': 'slideUp 0.3s ease-out forwards',
-            },
-            keyframes: {
-              fadeIn: {
-                '0%': { opacity: '0' },
-                '100%': { opacity: '1' },
-              },
-              fadeInDown: {
-                '0%': { opacity: '0', transform: 'translateY(-10px)' },
-                '100%': { opacity: '1', transform: 'translateY(0)' },
-              },
-              slideUp: {
-                '0%': { opacity: '0', transform: 'translateY(20px)' },
-                '100%': { opacity: '1', transform: 'translateY(0)' },
-              }
-            }
-          }
-        }
-      }
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "АНО ПБС «Экосистема учёта»",
+      "url": "https://ecosystem-pbs.ru",
+      "logo": "https://ecosystem-pbs.ru/logo.png",
+      "description": "Профессиональное бухгалтерское сопровождение и комплексная поддержка бизнеса в Новороссийске",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Новороссийск",
+        "addressCountry": "RU"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "availableLanguage": "Russian"
+      },
+      "sameAs": []
+    }
     </script>
-    <style>
-      /* Custom scrollbar for webkit */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #f1f5f9;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8;
-      }
-    </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.4",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
-    "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
-</head>
+  </head>
   <body class="bg-slate-50 text-slate-800 font-sans antialiased">
     <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
-</body>
+    <script type="module" src="/src/index.tsx"></script>
+  </body>
 </html>
