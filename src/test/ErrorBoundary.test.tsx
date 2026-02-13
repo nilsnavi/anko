@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import ErrorBoundary from '../components/ErrorBoundary';
 
@@ -30,8 +30,8 @@ describe('ErrorBoundary', () => {
     );
     
     expect(screen.getByText(/Что-то пошло не так/i)).toBeInTheDocument();
-    expect(screen.getByText(/Попробовать снова/i)).toBeInTheDocument();
-    expect(screen.getByText(/На главную/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Обновить страницу/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Перейти на главную страницу/i })).toBeInTheDocument();
     
     spy.mockRestore();
   });

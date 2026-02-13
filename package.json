@@ -11,6 +11,12 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:chromium": "playwright test --project=chromium",
+    "test:e2e:report": "playwright show-report",
     "dev:server": "cd server && npm run dev",
     "start:server": "cd server && npm start",
     "health-check": "node scripts/health-check.bat || ./scripts/health-check.sh",
@@ -26,6 +32,7 @@
     "react-router-dom": "^7.13.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@tailwindcss/postcss": "^4.1.18",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^14.1.2",

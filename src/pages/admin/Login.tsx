@@ -47,7 +47,7 @@ const Login: React.FC = () => {
           </div>
         </div>
         <h2 className="text-2xl font-bold text-center text-slate-900 mb-6">Вход в панель управления</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" data-testid="login-form">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Имя пользователя</label>
             <div className="relative">
@@ -61,6 +61,7 @@ const Login: React.FC = () => {
                 className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white text-slate-900"
                 placeholder="admin"
                 disabled={isLoading || authLoading}
+                data-testid="username-input"
               />
             </div>
           </div>
@@ -77,6 +78,7 @@ const Login: React.FC = () => {
                 className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white text-slate-900"
                 placeholder="••••••••"
                 disabled={isLoading || authLoading}
+                data-testid="password-input"
               />
             </div>
           </div>
@@ -85,6 +87,7 @@ const Login: React.FC = () => {
             type="submit"
             disabled={isLoading || authLoading || !username || !password}
             className="w-full bg-brand-600 text-white font-bold py-3 rounded-lg hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            data-testid="submit-button"
           >
             {(isLoading || authLoading) ? (
               <>
