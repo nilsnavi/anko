@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { X, Cookie, Settings, Shield } from 'lucide-react';
+import { Cookie, Settings, Shield } from 'lucide-react';
 import {
   hasConsent,
   acceptAllCookies,
   acceptEssentialOnly,
-  getCookieConsent,
 } from '../utils/cookieConsent';
 
 /**
@@ -22,6 +21,7 @@ export const CookieConsent: React.FC = () => {
       const timer = setTimeout(() => setIsVisible(true), 1000);
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, []);
 
   const handleAcceptAll = () => {
@@ -49,15 +49,15 @@ export const CookieConsent: React.FC = () => {
             <div className="bg-brand-100 p-3 rounded-full shrink-0">
               <Cookie className="w-6 h-6 text-brand-600" />
             </div>
-            
+
             <div className="flex-1">
               <h3 className="text-lg font-bold text-slate-900 mb-2">
                 🍪 Мы используем cookies
               </h3>
-              
+
               {!showDetails ? (
                 <p className="text-slate-600 text-sm leading-relaxed">
-                  Мы используем cookies для улучшения вашего опыта, анализа трафика и персонализации контента. 
+                  Мы используем cookies для улучшения вашего опыта, анализа трафика и персонализации контента.
                   Нажимая "Принять всё", вы соглашаетесь с использованием всех cookies.
                 </p>
               ) : (
@@ -71,7 +71,7 @@ export const CookieConsent: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start gap-2">
                     <Settings className="w-4 h-4 text-blue-600 mt-1 shrink-0" />
                     <div>
@@ -85,15 +85,15 @@ export const CookieConsent: React.FC = () => {
               )}
 
               <div className="flex flex-wrap gap-2 mt-3">
-                <a 
-                  href="/#/privacy" 
+                <a
+                  href="/#/privacy"
                   className="text-xs text-brand-600 hover:text-brand-700 underline"
                 >
                   Политика конфиденциальности
                 </a>
                 <span className="text-slate-300">•</span>
-                <a 
-                  href="/#/cookie-policy" 
+                <a
+                  href="/#/cookie-policy"
                   className="text-xs text-brand-600 hover:text-brand-700 underline"
                 >
                   Cookie Policy

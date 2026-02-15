@@ -14,7 +14,6 @@ export interface CookieConsent {
 }
 
 const CONSENT_KEY = 'cookie_consent';
-const CONSENT_VERSION = '1.0';
 const CONSENT_EXPIRY_DAYS = 365;
 
 /**
@@ -24,16 +23,16 @@ export const getCookieConsent = (): CookieConsent | null => {
   try {
     const stored = localStorage.getItem(CONSENT_KEY);
     if (!stored) return null;
-    
+
     const data = JSON.parse(stored);
-    
+
     // Check if consent is still valid (not expired)
     const expiryTime = data.timestamp + (CONSENT_EXPIRY_DAYS * 24 * 60 * 60 * 1000);
     if (Date.now() > expiryTime) {
       localStorage.removeItem(CONSENT_KEY);
       return null;
     }
-    
+
     return data;
   } catch (error) {
     console.error('Error reading cookie consent:', error);
@@ -50,9 +49,9 @@ export const setCookieConsent = (consent: Omit<CookieConsent, 'timestamp'>): voi
       ...consent,
       timestamp: Date.now(),
     };
-    
+
     localStorage.setItem(CONSENT_KEY, JSON.stringify(consentData));
-    
+
     // Dispatch custom event for other components to react
     window.dispatchEvent(new CustomEvent('cookieConsentChanged', { detail: consentData }));
   } catch (error) {
@@ -105,11 +104,11 @@ export const acceptEssentialOnly = (): void => {
  */
 export const revokeConsent = (): void => {
   localStorage.removeItem(CONSENT_KEY);
-  
+
   // Clear non-essential cookies
   clearAnalyticsCookies();
   clearMarketingCookies();
-  
+
   window.dispatchEvent(new CustomEvent('cookieConsentChanged', { detail: null }));
 };
 

@@ -14,7 +14,7 @@ interface PerformanceMetrics {
   // Additional metrics
   domContentLoaded?: number;
   windowLoad?: number;
-  
+
   // Navigation timing
   navigationStart?: number;
   responseEnd?: number;
@@ -62,7 +62,9 @@ function monitorWebVitals(): void {
       const entries = list.getEntries();
       const lastEntry = entries[entries.length - 1] as any;
       metrics.LCP = lastEntry.renderTime || lastEntry.loadTime;
-      reportMetric('LCP', metrics.LCP);
+      if (metrics.LCP !== undefined) {
+        reportMetric('LCP', metrics.LCP);
+      }
     });
     observer.observe({ entryTypes: ['largest-contentful-paint'] });
   };
@@ -112,7 +114,7 @@ function monitorPageLoad(): void {
   window.addEventListener('load', () => {
     setTimeout(() => {
       const perfData = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-      
+
       if (perfData) {
         metrics.TTFB = perfData.responseStart - perfData.requestStart;
         metrics.domContentLoaded = perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart;
@@ -134,7 +136,7 @@ function monitorResources(): void {
   const observer = new PerformanceObserver((list) => {
     for (const entry of list.getEntries()) {
       const resource = entry as PerformanceResourceTiming;
-      
+
       // Log slow resources (> 1 second)
       if (resource.duration > 1000) {
         console.warn(`Slow resource: ${resource.name} took ${resource.duration.toFixed(2)}ms`);
@@ -257,10 +259,11 @@ export function measureTiming(name: string, startMark?: string, endMark?: string
     if (startMark && endMark) {
       performance.measure(name, startMark, endMark);
     }
-    
+
     const measures = performance.getEntriesByName(name, 'measure');
-    if (measures.length > 0) {
-      return measures[measures.length - 1].duration;
+    const lastMeasure = measures[measures.length - 1];
+    if (lastMeasure) {
+      return lastMeasure.duration;
     }
   } catch (error) {
     console.warn(`Failed to measure timing for ${name}`, error);

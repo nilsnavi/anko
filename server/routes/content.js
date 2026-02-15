@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../db/in-memory');
 const { authenticateToken } = require('../middleware/auth');
 
+
 // Services endpoints
 router.get('/services', (req, res) => {
     try {

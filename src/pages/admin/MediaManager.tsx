@@ -7,7 +7,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const API_MEDIA_URL = `${API_BASE_URL}/api/media`;
 
 const MediaManager: React.FC = () => {
-    const { user } = useAuth();
+    useAuth(); // Verify authentication
     const [files, setFiles] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
@@ -42,7 +42,7 @@ const MediaManager: React.FC = () => {
 
             // Create preview for first file
             const file = files[0];
-            if (file.type.startsWith('image/')) {
+            if (file?.type.startsWith('image/')) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     setPreviewUrl(e.target?.result as string);
@@ -61,7 +61,7 @@ const MediaManager: React.FC = () => {
 
             const formData = new FormData();
 
-            if (selectedFiles.length === 1) {
+            if (selectedFiles.length === 1 && selectedFiles[0]) {
                 formData.append('image', selectedFiles[0]);
                 await axios.post(`${API_MEDIA_URL}/upload`, formData, {
                     headers: {

@@ -11,10 +11,10 @@ export function useServiceWorker({ onUpdate }: UpdatePromptProps = {}) {
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker,
   } = useRegisterSW({
-    onRegistered(r) {
+    onRegistered(r: ServiceWorkerRegistration | undefined) {
       console.log('Service Worker registered:', r);
     },
-    onRegisterError(error) {
+    onRegisterError(error: Error) {
       console.error('Service Worker registration error:', error);
     },
   });
@@ -75,7 +75,7 @@ export function PWAUpdatePrompt() {
             )}
           </div>
         </div>
-        
+
         <div className="flex gap-2 mt-4">
           {needRefresh && (
             <button

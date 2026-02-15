@@ -6,7 +6,7 @@ const { generateResetToken, hashResetToken } = require('../utils/crypto');
 const { validateRegisterInput, validateLoginInput } = require('../utils/validators');
 const { catchAsync, AppError } = require('../middleware/errorHandler');
 const { authLimiter, registerLimiter, passwordResetLimiter } = require('../middleware/rateLimiter');
-const authenticateToken = require('../middleware/auth');
+const { authenticateToken } = require('../middleware/auth');
 
 /**
  * @route   POST /api/auth/register

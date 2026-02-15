@@ -1,12 +1,10 @@
-import { 
-  Briefcase, 
-  Calculator, 
-  GraduationCap, 
-  Medal, 
-  Building2, 
-  FileText, 
-  Scale, 
-  Printer 
+import {
+  Calculator,
+  GraduationCap,
+  Medal,
+  Building2,
+  Scale,
+  Printer
 } from "lucide-react";
 import { ServiceItem, NavItem, TeamMember, NewsItem, FAQItem, Client, Inquiry } from "./types";
 

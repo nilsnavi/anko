@@ -1,9 +1,11 @@
 import React, { Suspense, lazy } from 'react';
-import { HashRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate, useLocation, useOutlet } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import Layout from './components/Layout';
 import ErrorBoundary from './components/ErrorBoundary';
 import { PWAUpdatePrompt } from './components/PWAUpdatePrompt';
 import { useAnalytics } from './hooks/useAnalytics';
+import { PageTransition } from './components/animations';
 
 // Contexts
 import { DataProvider } from './context/DataContext';
@@ -79,6 +81,20 @@ const AnalyticsWrapper: React.FC<{ children: React.ReactNode }> = ({ children })
   return <>{children}</>;
 };
 
+// Animated outlet for page transitions
+const AnimatedOutlet: React.FC = () => {
+  const outlet = useOutlet();
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <PageTransition key={location.pathname}>
+        {outlet}
+      </PageTransition>
+    </AnimatePresence>
+  );
+};
+
 const App: React.FC = () => {
   return (
     <ErrorBoundary>
@@ -89,40 +105,42 @@ const App: React.FC = () => {
               <ScrollToTop />
               <PWAUpdatePrompt />
               <Suspense fallback={<LoadingFallback />}>
-              <Routes>
-                {/* Public Website Routes */}
-                <Route path="/" element={<Layout />}>
-                  <Route index element={<Home />} />
-                  <Route path="about" element={<About />} />
-                  <Route path="services" element={<Services />} />
-                  <Route path="veterans" element={<Veterans />} />
-                  <Route path="education" element={<Education />} />
-                  <Route path="contacts" element={<Contacts />} />
-                </Route>
+                <Routes>
+                  {/* Public Website Routes */}
+                  <Route path="/" element={<Layout />}>
+                    <Route element={<AnimatedOutlet />}>
+                      <Route index element={<Home />} />
+                      <Route path="about" element={<About />} />
+                      <Route path="services" element={<Services />} />
+                      <Route path="veterans" element={<Veterans />} />
+                      <Route path="education" element={<Education />} />
+                      <Route path="contacts" element={<Contacts />} />
+                    </Route>
+                  </Route>
 
-                {/* Admin Routes */}
-                <Route path="/admin/login" element={<Login />} />
-                <Route path="/admin/register" element={<Register />} />
-                <Route path="/admin/reset-password" element={<ResetPassword />} />
-                <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+                  {/* Admin Routes */}
+                  <Route path="/admin/login" element={<Login />} />
+                  <Route path="/admin/register" element={<Register />} />
+                  <Route path="/admin/reset-password" element={<ResetPassword />} />
+                  <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
 
-                <Route path="/admin" element={
-                  <ProtectedRoute>
-                    <AdminLayout />
-                  </ProtectedRoute>
-                }>
-                  <Route path="dashboard" element={<Dashboard />} />
-                  <Route path="services" element={<AdminServices />} />
-                  <Route path="news" element={<AdminNews />} />
-                  <Route path="team" element={<AdminTeam />} />
-                  <Route path="faq" element={<AdminFAQ />} />
-                  <Route path="clients" element={<AdminClients />} />
-                  <Route path="media" element={<MediaManager />} />
-                </Route>
+                  <Route path="/admin" element={
+                    <ProtectedRoute>
+                      <AdminLayout />
+                    </ProtectedRoute>
+                  }>
+                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="services" element={<AdminServices />} />
+                    <Route path="news" element={<AdminNews />} />
+                    <Route path="team" element={<AdminTeam />} />
+                    <Route path="faq" element={<AdminFAQ />} />
+                    <Route path="clients" element={<AdminClients />} />
+                    <Route path="media" element={<MediaManager />} />
+                  </Route>
 
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </Suspense>
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+              </Suspense>
             </AnalyticsWrapper>
           </Router>
         </AuthProvider>

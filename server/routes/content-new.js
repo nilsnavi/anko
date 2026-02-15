@@ -6,8 +6,7 @@ const TeamMember = require('../models/TeamMember');
 const FAQ = require('../models/FAQ');
 const Client = require('../models/Client');
 const Inquiry = require('../models/Inquiry');
-const authenticateToken = require('../middleware/auth');
-const { requireAdmin } = require('../middleware/auth');
+const { authenticateToken, requireAdmin } = require('../middleware/auth');
 const { catchAsync, AppError } = require('../middleware/errorHandler');
 
 // ===================
@@ -44,7 +43,7 @@ router.get('/services/:id', catchAsync(async (req, res, next) => {
  */
 router.put('/services/:serviceId', authenticateToken, requireAdmin, catchAsync(async (req, res, next) => {
     const { title, description, details } = req.body;
-    
+
     const service = await Service.findOneAndUpdate(
         { serviceId: req.params.serviceId },
         { title, description, details },
@@ -128,7 +127,7 @@ router.delete('/team/:id', authenticateToken, requireAdmin, catchAsync(async (re
  */
 router.get('/news', catchAsync(async (req, res) => {
     const { limit = 10, page = 1, category } = req.query;
-    
+
     const query = { isPublished: true };
     if (category) query.category = category;
 
@@ -158,7 +157,7 @@ router.get('/news', catchAsync(async (req, res) => {
  */
 router.get('/news/:id', catchAsync(async (req, res, next) => {
     const news = await News.findById(req.params.id).populate('author', 'username email');
-    
+
     if (!news) {
         return next(new AppError('Новость не найдена', 404));
     }
@@ -229,7 +228,7 @@ router.delete('/news/:id', authenticateToken, requireAdmin, catchAsync(async (re
  */
 router.get('/faq', catchAsync(async (req, res) => {
     const { category } = req.query;
-    
+
     const query = { isPublished: true };
     if (category) query.category = category;
 
@@ -293,7 +292,7 @@ router.delete('/faq/:id', authenticateToken, requireAdmin, catchAsync(async (req
  */
 router.get('/clients', authenticateToken, requireAdmin, catchAsync(async (req, res) => {
     const { status, search } = req.query;
-    
+
     const query = {};
     if (status) query.status = status;
     if (search) {
@@ -370,7 +369,7 @@ router.delete('/clients/:id', authenticateToken, requireAdmin, catchAsync(async 
  */
 router.get('/inquiries', authenticateToken, requireAdmin, catchAsync(async (req, res) => {
     const { status, priority } = req.query;
-    
+
     const query = {};
     if (status) query.status = status;
     if (priority) query.priority = priority;
@@ -390,9 +389,9 @@ router.get('/inquiries', authenticateToken, requireAdmin, catchAsync(async (req,
 router.post('/inquiries', catchAsync(async (req, res) => {
     const inquiry = new Inquiry(req.body);
     await inquiry.save();
-    res.status(201).json({ 
+    res.status(201).json({
         message: 'Ваше обращение принято. Мы свяжемся с вами в ближайшее время.',
-        id: inquiry._id 
+        id: inquiry._id
     });
 }));
 
@@ -403,7 +402,7 @@ router.post('/inquiries', catchAsync(async (req, res) => {
  */
 router.put('/inquiries/:id', authenticateToken, requireAdmin, catchAsync(async (req, res, next) => {
     const updateData = { ...req.body };
-    
+
     // If marking as resolved, set resolvedAt
     if (updateData.status === 'resolved' || updateData.status === 'closed') {
         updateData.resolvedAt = new Date();
