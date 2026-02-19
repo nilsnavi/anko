@@ -41,6 +41,52 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Default services data as fallback
+  const defaultServices: ServiceItem[] = [
+    {
+      id: '1',
+      title: 'Бухгалтерские услуги',
+      description: 'Ведение бухгалтерского учета, подготовка и сдача отчетности, консультации по налогообложению.',
+      icon: 'Calculator',
+      features: ['Ведение учета', 'Сдача отчетности', 'Налоговые консультации']
+    },
+    {
+      id: '2',
+      title: 'Регистрация бизнеса',
+      description: 'Помощь в регистрации ИП и ООО, подготовка документов, открытие расчетного счета.',
+      icon: 'Building2',
+      features: ['Регистрация ИП', 'Регистрация ООО', 'Открытие счета']
+    },
+    {
+      id: '3',
+      title: 'Кадровый учет',
+      description: 'Ведение кадровой документации, оформление сотрудников, расчет зарплаты.',
+      icon: 'Users',
+      features: ['Кадровые документы', 'Расчет зарплаты', 'Кадровый аудит']
+    },
+    {
+      id: '4',
+      title: 'Налоговое консультирование',
+      description: 'Оптимизация налогообложения, представление интересов в налоговой, возврат налогов.',
+      icon: 'Scale',
+      features: ['Налоговая оптимизация', 'Сопровождение проверок', 'Возврат НДФЛ']
+    },
+    {
+      id: '5',
+      title: 'Обучение и семинары',
+      description: 'Обучение бухгалтеров, семинары для предпринимателей, индивидуальные консультации.',
+      icon: 'GraduationCap',
+      features: ['Курсы бухгалтеров', 'Семинары', 'Индивидуальное обучение']
+    },
+    {
+      id: '6',
+      title: 'Печатная продукция',
+      description: 'Изготовление бланков, печать документов, полиграфические услуги.',
+      icon: 'Printer',
+      features: ['Бланки', 'Печать документов', 'Полиграфия']
+    }
+  ];
+
   // Load initial data
   useEffect(() => {
     const loadData = async () => {
@@ -53,12 +99,14 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           axios.get<FAQItem[]>(`${API_CONTENT_URL}/faq`)
         ]);
 
-        setServices(servicesRes.data);
+        setServices(servicesRes.data.length > 0 ? servicesRes.data : defaultServices);
         setTeam(teamRes.data);
         setNews(newsRes.data);
         setFaq(faqRes.data);
       } catch (error) {
         console.error('Error loading initial data:', error);
+        // Use default data on error
+        setServices(defaultServices);
       } finally {
         setLoading(false);
       }

@@ -1,9 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Section from '../components/Section';
 import { COMPANY_INFO } from '../constants';
 import { useData } from '../context/DataContext';
 import { MapPin, Phone, Mail, Clock, CheckCircle, FileText, ShieldCheck, AlertCircle, Send } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
+import {
+   TextReveal,
+   AnimatedCircles,
+   StaggerReveal,
+} from '../components/animations';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Contacts: React.FC = () => {
    const { faq, addInquiry } = useData();
@@ -126,9 +135,44 @@ ${message}
       setLastId(null);
    };
 
+   const headerRef = useRef<HTMLDivElement>(null);
+
+   useEffect(() => {
+      const ctx = gsap.context(() => {
+         gsap.fromTo(
+            '.contacts-header-content',
+            { opacity: 0, y: 40 },
+            {
+               opacity: 1,
+               y: 0,
+               duration: 0.8,
+               stagger: 0.15,
+               ease: 'power3.out',
+            }
+         );
+      }, headerRef);
+
+      return () => ctx.revert();
+   }, []);
+
    return (
-      <div className="pt-8">
-         <Section title="Оставить заявку на помощь">
+      <div>
+         {/* Header with GSAP */}
+         <div ref={headerRef} className="bg-slate-900 text-white py-16 relative overflow-hidden">
+            <AnimatedCircles count={3} />
+            <div className="container mx-auto px-4 relative z-10">
+               <div className="text-center max-w-4xl mx-auto">
+                  <h1 className="contacts-header-content text-4xl md:text-5xl font-bold mb-4">
+                     <TextReveal>Контакты</TextReveal>
+                  </h1>
+                  <p className="contacts-header-content text-xl text-slate-300">
+                     Оставить заявку на помощь
+                  </p>
+               </div>
+            </div>
+         </div>
+
+         <Section>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                {/* Info Card */}
                <div className="space-y-8">
@@ -143,8 +187,8 @@ ${message}
                      </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                     <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex items-start gap-4">
+                  <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 gap-6" staggerDelay={0.1} childClassName="contact-card">
+                     <div className="contact-card bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex items-start gap-4">
                         <div className="bg-slate-100 p-3 rounded-xl text-slate-600">
                            <Phone size={24} />
                         </div>
@@ -153,7 +197,7 @@ ${message}
                            <p className="text-slate-600 mt-1">{COMPANY_INFO.phone}</p>
                         </div>
                      </div>
-                     <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex items-start gap-4">
+                     <div className="contact-card bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex items-start gap-4">
                         <div className="bg-slate-100 p-3 rounded-xl text-slate-600">
                            <Mail size={24} />
                         </div>
@@ -167,7 +211,7 @@ ${message}
                         href={COMPANY_INFO.telegram}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex items-start gap-4 group"
+                        className="contact-card bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex items-start gap-4 group"
                      >
                         <div className="bg-slate-100 p-3 rounded-xl text-slate-600 group-hover:text-brand-600 group-hover:bg-brand-50 transition-colors">
                            <Send size={24} className="-ml-0.5 mt-0.5" />
@@ -182,7 +226,7 @@ ${message}
                         href={COMPANY_INFO.vk}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex items-start gap-4 group"
+                        className="contact-card bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex items-start gap-4 group"
                      >
                         <div className="bg-slate-100 p-3 rounded-xl text-slate-600 group-hover:text-brand-600 group-hover:bg-brand-50 transition-colors">
                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -210,7 +254,7 @@ ${message}
                         </div>
                      </a>
 
-                     <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex items-start gap-4 md:col-span-2">
+                     <div className="contact-card bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex items-start gap-4 md:col-span-2">
                         <div className="bg-slate-100 p-3 rounded-xl text-slate-600">
                            <MapPin size={24} />
                         </div>
@@ -223,7 +267,7 @@ ${message}
                            </div>
                         </div>
                      </div>
-                  </div>
+                  </StaggerReveal>
                </div>
 
                {/* Contact Form */}

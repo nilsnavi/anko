@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Section from '../components/Section';
 import { useData } from '../context/DataContext';
 import { Check, Building2, Calculator, Medal, GraduationCap, Scale, Printer, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { StaggerContainer, StaggerItem } from '../components/animations';
+import {
+  TextReveal,
+  AnimatedCircles,
+  MagneticButton,
+} from '../components/animations';
+
+gsap.registerPlugin(ScrollTrigger);
 
 // Icon mapping for services (from API string to component)
 const iconMap: Record<string, React.ComponentType<{ size?: number; strokeWidth?: number; className?: string }>> = {
@@ -24,10 +33,44 @@ const getServiceIcon = (iconName: unknown) => {
 
 const Services: React.FC = () => {
   const { services } = useData();
+  const headerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.services-header-content',
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power3.out',
+        }
+      );
+    }, headerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <div className="pt-8 bg-slate-50 min-h-screen">
-      <Section title="Наши услуги" centered subtitle="Профессиональное сопровождение на каждом этапе развития вашего бизнеса">
+    <div className="bg-slate-50 min-h-screen">
+      {/* Header with GSAP */}
+      <div ref={headerRef} className="bg-slate-900 text-white py-20 relative overflow-hidden">
+        <AnimatedCircles count={4} />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center max-w-4xl mx-auto">
+            <h1 className="services-header-content text-4xl md:text-5xl font-bold mb-6">
+              <TextReveal>Наши услуги</TextReveal>
+            </h1>
+            <p className="services-header-content text-xl text-slate-300 leading-relaxed">
+              Профессиональное сопровождение на каждом этапе развития вашего бизнеса
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <Section>
         <StaggerContainer className="grid gap-12" staggerDelay={0.15}>
           {services.map((service, index) => {
             const ServiceIcon = getServiceIcon(service.icon);
@@ -66,20 +109,19 @@ const Services: React.FC = () => {
                       </div>
                     )}
 
-                    <Link
-                      to={`/contacts?subject=${encodeURIComponent(service.title)}`}
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-lg font-medium hover:bg-brand-600 transition-colors group"
-                    >
-                      Заказать услугу
-                      <motion.span
-                        className="inline-block"
-                        initial={{ x: 0 }}
-                        whileHover={{ x: 4 }}
-                        transition={{ type: 'spring', stiffness: 400 }}
-                      >
-                        <ArrowRight size={18} />
-                      </motion.span>
-                    </Link>
+                    <MagneticButton className="inline-flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-lg font-medium hover:bg-brand-600 transition-colors group">
+                      <Link to={`/contacts?subject=${encodeURIComponent(service.title)}`} className="flex items-center gap-2">
+                        Заказать услугу
+                        <motion.span
+                          className="inline-block"
+                          initial={{ x: 0 }}
+                          whileHover={{ x: 4 }}
+                          transition={{ type: 'spring', stiffness: 400 }}
+                        >
+                          <ArrowRight size={18} />
+                        </motion.span>
+                      </Link>
+                    </MagneticButton>
                   </div>
                 </motion.div>
               </StaggerItem>

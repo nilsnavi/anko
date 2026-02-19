@@ -1,11 +1,3 @@
-import {
-  Calculator,
-  GraduationCap,
-  Medal,
-  Building2,
-  Scale,
-  Printer
-} from "lucide-react";
 import { ServiceItem, NavItem, TeamMember, NewsItem, FAQItem, Client, Inquiry } from "./types";
 
 export const COMPANY_INFO = {
@@ -35,42 +27,42 @@ export const SERVICES: ServiceItem[] = [
     id: "registration",
     title: "Регистрация бизнеса",
     description: "Полный цикл регистрации ИП и ООО. Помощь в выборе системы налогообложения и подготовка документов.",
-    icon: Building2,
+    icon: "Building2",
     details: ["Регистрация ООО и ИП под ключ", "Внесение изменений в ЕГРЮЛ/ЕГРИП", "Ликвидация предприятий"]
   },
   {
     id: "accounting",
     title: "Бухгалтерское сопровождение",
     description: "Профессиональное ведение бухгалтерского учета, сдача отчетности и взаимодействие с фондами.",
-    icon: Calculator,
+    icon: "Calculator",
     details: ["Аутсорсинг бухгалтерии", "Восстановление учета", "Кадровый учет и расчет зарплаты"]
   },
   {
     id: "veterans",
     title: "Поддержка ветеранов",
     description: "Специальные программы адаптации и помощи в запуске бизнеса для ветеранов боевых действий.",
-    icon: Medal,
+    icon: "Medal",
     details: ["Льготная регистрация бизнеса", "Менторская поддержка", "Помощь в получении грантов"]
   },
   {
     id: "education",
     title: "Обучение",
     description: "Семинары, тренинги и курсы повышения квалификации для предпринимателей.",
-    icon: GraduationCap,
+    icon: "GraduationCap",
     details: ["Основы предпринимательства", "Налоговое планирование", "Финансовая грамотность"]
   },
   {
     id: "legal",
     title: "Правовая поддержка",
     description: "Консультации по правовым вопросам ведения бизнеса и договорная работа.",
-    icon: Scale,
+    icon: "Scale",
     details: ["Разработка договоров", "Правовой аудит", "Представительство в органах"]
   },
   {
     id: "technical",
     title: "Технические услуги",
     description: "Помощь с документацией, ККТ и электронным документооборотом.",
-    icon: Printer,
+    icon: "Printer",
     details: ["Регистрация ККТ", "Копирование и сканирование", "Настройка ЭДО"]
   }
 ];

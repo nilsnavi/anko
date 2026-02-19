@@ -1,15 +1,28 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
     ArrowRight, CheckCircle2, TrendingUp, Users, ShieldCheck, Medal, Star,
-    Building2, Calculator, GraduationCap, Scale, Printer
+    Building2, Calculator, GraduationCap, Scale, Printer, TrendingUp as TrendIcon,
+    Award, Briefcase
 } from 'lucide-react';
 import Section from '../components/Section';
 import { useData } from '../context/DataContext';
 import { FadeInWhenVisible, StaggerContainer, StaggerItem } from '../components/animations';
 import { GridSkeleton } from '../components/Skeleton';
 import { NewsFilterBar, filterNews } from '../components/FilterBar';
+import {
+    TextReveal,
+    StatsCard,
+    RevealOnScroll,
+    AnimatedCircles,
+    MagneticButton,
+} from '../components/animations';
+
+// Register GSAP plugins
+gsap.registerPlugin(ScrollTrigger);
 // Icon mapping for services (from API string to component)
 const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
     Building2,
@@ -28,6 +41,8 @@ const getServiceIcon = (iconName: unknown) => {
 
 const Home: React.FC = () => {
     const { services, news, loading } = useData();
+    const heroRef = useRef<HTMLDivElement>(null);
+    const heroContentRef = useRef<HTMLDivElement>(null);
 
     // News filters state
     const [newsFilters, setNewsFilters] = useState<{
@@ -49,16 +64,81 @@ const Home: React.FC = () => {
         return filterNews(news, newsFilters);
     }, [news, newsFilters]);
 
+    // GSAP Hero Animation
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            // Hero entrance animation timeline
+            const tl = gsap.timeline({
+                defaults: { ease: 'power3.out' },
+            });
+
+            // Badge animation
+            tl.fromTo(
+                '.gsap-hero-badge',
+                { opacity: 0, y: 30, scale: 0.9 },
+                { opacity: 1, y: 0, scale: 1, duration: 0.8 }
+            )
+                // Title with clip-path reveal
+                .fromTo(
+                    '.gsap-hero-title',
+                    { opacity: 0, y: 60, clipPath: 'inset(100% 0 0 0)' },
+                    { opacity: 1, y: 0, clipPath: 'inset(0% 0 0 0)', duration: 1 },
+                    '-=0.4'
+                )
+                // Subtitle
+                .fromTo(
+                    '.gsap-hero-subtitle',
+                    { opacity: 0, y: 40 },
+                    { opacity: 1, y: 0, duration: 0.8 },
+                    '-=0.6'
+                )
+                // Buttons with stagger
+                .fromTo(
+                    '.gsap-hero-btn',
+                    { opacity: 0, y: 30, scale: 0.9 },
+                    { opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.15 },
+                    '-=0.4'
+                );
+
+            // Parallax effect for background
+            gsap.to('.gsap-hero-bg', {
+                yPercent: 20,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: heroRef.current,
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: true,
+                },
+            });
+
+            // Content fade out on scroll
+            gsap.to(heroContentRef.current, {
+                opacity: 0,
+                y: -30,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: heroRef.current,
+                    start: 'top top',
+                    end: '40% top',
+                    scrub: true,
+                },
+            });
+        }, heroRef);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
         <>
-            {/* Hero Section */}
-            <div className="relative bg-slate-900 text-white pt-24 pb-32 overflow-hidden">
-                {/* Background Image */}
-                <div className="absolute inset-0">
+            {/* Hero Section with GSAP */}
+            <div ref={heroRef} className="relative bg-slate-900 text-white pt-24 pb-32 overflow-hidden">
+                {/* Background Image with GSAP parallax */}
+                <div className="gsap-hero-bg absolute inset-0">
                     <img
                         src="/hero-bg.jpg"
                         alt="Office Background"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover scale-110"
                     />
                     {/* Dark overlay for better text readability */}
                     <div className="absolute inset-0 bg-slate-900/70"></div>
@@ -67,10 +147,10 @@ const Home: React.FC = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
                 </div>
 
-                <div className="container mx-auto px-4 relative z-10">
+                <div ref={heroContentRef} className="container mx-auto px-4 relative z-10">
                     <div className="max-w-4xl">
                         {/* Highlight Plaque for Veterans */}
-                        <div className="inline-flex flex-col sm:flex-row items-start sm:items-center gap-3 bg-white/10 backdrop-blur-md border border-brand-400/30 rounded-xl p-4 mb-8 max-w-2xl hover:bg-white/15 transition-colors">
+                        <div className="gsap-hero-badge inline-flex flex-col sm:flex-row items-start sm:items-center gap-3 bg-white/10 backdrop-blur-md border border-brand-400/30 rounded-xl p-4 mb-8 max-w-2xl hover:bg-white/15 transition-colors">
                             <div className="bg-red-600 text-white p-2 rounded-lg shrink-0">
                                 <Medal size={24} />
                             </div>
@@ -83,20 +163,20 @@ const Home: React.FC = () => {
                             </div>
                         </div>
 
-                        <span className="inline-block py-1 px-3 rounded-full bg-brand-500/20 border border-brand-400 text-brand-300 text-sm font-semibold mb-6">
+                        <span className="gsap-hero-badge inline-block py-1 px-3 rounded-full bg-brand-500/20 border border-brand-400 text-brand-300 text-sm font-semibold mb-6">
                             АНО ПБС «Экосистема учёта»
                         </span>
-                        <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
+                        <h1 className="gsap-hero-title text-4xl md:text-6xl font-bold leading-tight mb-6">
                             Комплексная поддержка вашего бизнеса в <span className="text-brand-400">Новороссийске</span>
                         </h1>
-                        <p className="text-xl text-slate-300 mb-8 leading-relaxed max-w-2xl">
+                        <p className="gsap-hero-subtitle text-xl text-slate-300 mb-8 leading-relaxed max-w-2xl">
                             От регистрации ИП до ведения бухгалтерии. Мы помогаем предпринимателям и ветеранам боевых действий строить успешный бизнес с надежным тылом.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <Link to="/contacts" className="inline-flex justify-center items-center px-8 py-4 bg-brand-600 hover:bg-brand-500 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-brand-500/30">
+                            <Link to="/contacts" className="gsap-hero-btn inline-flex justify-center items-center px-8 py-4 bg-brand-600 hover:bg-brand-500 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-brand-500/30">
                                 Получить консультацию
                             </Link>
-                            <Link to="/services" className="inline-flex justify-center items-center px-8 py-4 bg-transparent border border-white/30 hover:bg-white/10 text-white font-semibold rounded-lg transition-all backdrop-blur-sm">
+                            <Link to="/services" className="gsap-hero-btn inline-flex justify-center items-center px-8 py-4 bg-transparent border border-white/30 hover:bg-white/10 text-white font-semibold rounded-lg transition-all backdrop-blur-sm">
                                 Наши услуги
                             </Link>
                         </div>
@@ -104,7 +184,53 @@ const Home: React.FC = () => {
                 </div>
             </div>
 
-            {/* Stats / Trust Indicators */}
+            {/* Stats Section with GSAP Counter Animation */}
+            <div className="relative bg-slate-50 py-16 overflow-hidden">
+                <AnimatedCircles count={4} />
+                <div className="container mx-auto px-4 relative z-10">
+                    <RevealOnScroll className="text-center mb-12">
+                        <h2 className="text-3xl font-bold text-slate-900 mb-4">
+                            <TextReveal>Наши достижения в цифрах</TextReveal>
+                        </h2>
+                        <p className="text-slate-600 max-w-2xl mx-auto">
+                            Результаты нашей работы говорят сами за себя
+                        </p>
+                    </RevealOnScroll>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <StatsCard
+                            value={500}
+                            suffix="+"
+                            label="Клиентов"
+                            icon={<Users size={32} />}
+                            duration={2}
+                        />
+                        <StatsCard
+                            value={1500}
+                            suffix="+"
+                            label="Оказанных услуг"
+                            icon={<Briefcase size={32} />}
+                            duration={2.5}
+                        />
+                        <StatsCard
+                            value={98}
+                            suffix="%"
+                            label="Довольных клиентов"
+                            icon={<Award size={32} />}
+                            duration={1.5}
+                        />
+                        <StatsCard
+                            value={5}
+                            suffix=" лет"
+                            label="На рынке"
+                            icon={<TrendIcon size={32} />}
+                            duration={1.8}
+                        />
+                    </div>
+                </div>
+            </div>
+
+            {/* Trust Indicators */}
             <FadeInWhenVisible delay={0.2}>
                 <div className="bg-white border-b border-slate-100 relative z-20 -mt-10 mx-4 md:mx-auto max-w-6xl rounded-xl shadow-xl p-8 grid grid-cols-1 md:grid-cols-3 gap-8">
                     <motion.div
@@ -382,16 +508,25 @@ const Home: React.FC = () => {
                 )}
             </Section>
 
-            {/* CTA Section */}
-            <div className="bg-brand-50 py-16">
-                <div className="container mx-auto px-4 text-center">
-                    <h2 className="text-3xl font-bold text-slate-900 mb-4">Готовы начать свое дело?</h2>
-                    <p className="text-slate-600 mb-8 max-w-2xl mx-auto">
-                        Запишитесь на бесплатную первичную консультацию, и мы поможем выбрать оптимальную форму регистрации и систему налогообложения.
-                    </p>
-                    <Link to="/contacts" className="bg-brand-600 text-white px-8 py-4 rounded-lg font-bold shadow-lg hover:bg-brand-700 transition-colors">
-                        Записаться на консультацию
-                    </Link>
+            {/* CTA Section with Magnetic Button */}
+            <div className="bg-brand-50 py-16 relative overflow-hidden">
+                <AnimatedCircles count={3} />
+                <div className="container mx-auto px-4 text-center relative z-10">
+                    <RevealOnScroll>
+                        <h2 className="text-3xl font-bold text-slate-900 mb-4">
+                            <TextReveal>Готовы начать свое дело?</TextReveal>
+                        </h2>
+                    </RevealOnScroll>
+                    <RevealOnScroll delay={0.2}>
+                        <p className="text-slate-600 mb-8 max-w-2xl mx-auto">
+                            Запишитесь на бесплатную первичную консультацию, и мы поможем выбрать оптимальную форму регистрации и систему налогообложения.
+                        </p>
+                    </RevealOnScroll>
+                    <RevealOnScroll delay={0.4}>
+                        <MagneticButton className="inline-flex bg-brand-600 text-white px-8 py-4 rounded-lg font-bold shadow-lg hover:bg-brand-700 transition-colors">
+                            <Link to="/contacts">Записаться на консультацию</Link>
+                        </MagneticButton>
+                    </RevealOnScroll>
                 </div>
             </div>
         </>

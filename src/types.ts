@@ -1,5 +1,3 @@
-import { LucideIcon } from "lucide-react";
-
 // Navigation Types
 export interface NavItem {
   label: string;
@@ -11,7 +9,8 @@ export interface ServiceItem {
   id: string;
   title: string;
   description: string;
-  icon: LucideIcon;
+  icon: string;
+  features?: string[];
   details?: string[];
 }
 
