@@ -1,9 +1,9 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
-import { Edit2, Save, X, Trash2, Plus, ChevronLeft, ChevronRight, Eye, Trash } from 'lucide-react';
+import { Save, X, Plus, ChevronLeft, ChevronRight, Trash } from 'lucide-react';
 import { NewsItem } from '../../types';
 import { SortableList, PreviewModal } from '../../components/admin';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -104,11 +104,13 @@ const AdminNews: React.FC = () => {
             <div className="grid grid-cols-2 gap-4">
               <input
                 type="text" placeholder="Дата"
+                aria-label="Дата"
                 value={newForm.date}
                 onChange={e => setNewForm({ ...newForm, date: e.target.value })}
                 className="px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 outline-none bg-white text-slate-900"
               />
               <select
+                aria-label="Категория"
                 value={newForm.category}
                 onChange={e => setNewForm({ ...newForm, category: e.target.value as any })}
                 className="px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 outline-none bg-white text-slate-900"
@@ -120,12 +122,14 @@ const AdminNews: React.FC = () => {
             </div>
             <input
               type="text" placeholder="Заголовок"
+              aria-label="Заголовок"
               value={newForm.title}
               onChange={e => setNewForm({ ...newForm, title: e.target.value })}
               className="px-4 py-2 rounded-lg border border-slate-300 w-full focus:ring-2 focus:ring-brand-500 outline-none bg-white text-slate-900"
             />
             <textarea
               placeholder="Текст новости"
+              aria-label="Текст новости"
               value={newForm.summary}
               onChange={e => setNewForm({ ...newForm, summary: e.target.value })}
               className="px-4 py-2 rounded-lg border border-slate-300 w-full focus:ring-2 focus:ring-brand-500 outline-none bg-white text-slate-900"
@@ -162,11 +166,13 @@ const AdminNews: React.FC = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <input
                     type="text"
+                    aria-label="Дата новости"
                     value={editForm.date}
                     onChange={e => setEditForm({ ...editForm, date: e.target.value })}
                     className="px-4 py-2 rounded-lg border border-slate-300 bg-white text-slate-900"
                   />
                   <select
+                    aria-label="Категория новости"
                     value={editForm.category}
                     onChange={e => setEditForm({ ...editForm, category: e.target.value as any })}
                     className="px-4 py-2 rounded-lg border border-slate-300 bg-white text-slate-900"
@@ -178,11 +184,13 @@ const AdminNews: React.FC = () => {
                 </div>
                 <input
                   type="text"
+                  aria-label="Заголовок новости"
                   value={editForm.title}
                   onChange={e => setEditForm({ ...editForm, title: e.target.value })}
                   className="px-4 py-2 rounded-lg border border-slate-300 w-full font-bold bg-white text-slate-900"
                 />
                 <textarea
+                  aria-label="Текст новости"
                   value={editForm.summary}
                   onChange={e => setEditForm({ ...editForm, summary: e.target.value })}
                   className="px-4 py-2 rounded-lg border border-slate-300 w-full bg-white text-slate-900"
@@ -219,6 +227,7 @@ const AdminNews: React.FC = () => {
           <button
             onClick={() => goToPage(currentPage - 1)}
             disabled={currentPage === 1}
+            aria-label="Предыдущая страница"
             className="p-2 rounded-lg border border-slate-200 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-slate-600"
           >
             <ChevronLeft size={20} />
@@ -231,6 +240,7 @@ const AdminNews: React.FC = () => {
           <button
             onClick={() => goToPage(currentPage + 1)}
             disabled={currentPage === totalPages}
+            aria-label="Следующая страница"
             className="p-2 rounded-lg border border-slate-200 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-slate-600"
           >
             <ChevronRight size={20} />

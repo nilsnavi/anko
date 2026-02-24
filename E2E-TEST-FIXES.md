@@ -1,6 +1,6 @@
 # 🔧 План исправления E2E тестов
 
-**Дата:** 11.02.2026  
+**Дата:** 11.02.2026
 **Статус:** 14/40 тестов прошли (35%)
 
 ---
@@ -13,11 +13,13 @@
 
 **Проблема:** Тесты не могут найти контент после навигации
 
-**Файлы:** 
+**Файлы:**
+
 - [e2e/navigation.spec.ts](e2e/navigation.spec.ts)
 - [e2e/pages.spec.ts](e2e/pages.spec.ts)
 
 **Решение:**
+
 ```typescript
 // Добавить ожидание загрузки контента
 await page.goto('/#/about');
@@ -26,6 +28,7 @@ await page.waitForSelector('h1', { timeout: 5000 });
 ```
 
 **Действия:**
+
 - [ ] Добавить `waitForLoadState('networkidle')` после каждой навигации
 - [ ] Добавить `waitForSelector` для ключевых элементов
 - [ ] Увеличить таймауты до 10000ms для медленных переходов
@@ -37,14 +40,17 @@ await page.waitForSelector('h1', { timeout: 5000 });
 **Проблема:** Не найдены формы входа и регистрации
 
 **Файлы:**
+
 - [e2e/admin.spec.ts](e2e/admin.spec.ts)
 - [src/pages/Login.tsx](src/pages/Login.tsx)
 - [src/pages/Register.tsx](src/pages/Register.tsx)
 
 **Проверка:**
+
 - [ ] Убедиться, что маршруты `/login` и `/register` работают
 - [ ] Проверить, что формы отображаются
 - [ ] Добавить `data-testid` атрибуты к формам:
+
   ```tsx
   <form data-testid="login-form">
     <input data-testid="email-input" />
@@ -54,6 +60,7 @@ await page.waitForSelector('h1', { timeout: 5000 });
   ```
 
 **Обновить тесты:**
+
 ```typescript
 await expect(page.getByTestId('login-form')).toBeVisible();
 await page.getByTestId('email-input').fill('test@example.com');
@@ -66,9 +73,11 @@ await page.getByTestId('email-input').fill('test@example.com');
 **Проблема:** Body определяется как hidden на разных размерах экрана
 
 **Файлы:**
+
 - [e2e/responsive.spec.ts](e2e/responsive.spec.ts)
 
 **Решение:**
+
 ```typescript
 // Вместо проверки visibility body, проверить конкретный контент
 test('should be responsive on Mobile', async ({ page }) => {
@@ -94,18 +103,22 @@ test('should be responsive on Mobile', async ({ page }) => {
 
 #### 4. Контент страниц (3 теста)
 
-**Проблема:** 
+**Проблема:**
+
 - Страница "Образование" - не найден текст об обучении
 - Страница "Ветераны" - не найден контент о поддержке
 
 **Файлы:**
+
 - [src/pages/Education.tsx](src/pages/Education.tsx)
 - [src/pages/Veterans.tsx](src/pages/Veterans.tsx)
 
 **Действия:**
+
 - [ ] Проверить наличие контента на этих страницах
 - [ ] Если контента нет - добавить базовый контент
 - [ ] Обновить тесты под реальный контент:
+
   ```typescript
   // Вместо жесткой привязки к тексту "ветеран"
   const pageTitle = page.locator('h1').first();
@@ -119,10 +132,12 @@ test('should be responsive on Mobile', async ({ page }) => {
 **Проблема:** Нарушения иерархии заголовков и ARIA ролей
 
 **Файлы:**
+
 - [e2e/accessibility.spec.ts](e2e/accessibility.spec.ts)
 - Все компоненты страниц
 
 **Исправления:**
+
 ```tsx
 // Правильная иерархия заголовков
 <main>
@@ -141,6 +156,7 @@ test('should be responsive on Mobile', async ({ page }) => {
 ```
 
 **Действия:**
+
 - [ ] Проверить иерархию h1->h2->h3 на всех страницах
 - [ ] Добавить ARIA роли к основным секциям
 - [ ] Провести аудит контрастности цветов
@@ -150,13 +166,16 @@ test('should be responsive on Mobile', async ({ page }) => {
 #### 6. Performance (2 теста)
 
 **Проблема:**
+
 - Отсутствует lazy loading изображений
 - FCP таймаутится
 
 **Файлы:**
+
 - Все компоненты с изображениями
 
 **Решение:**
+
 ```tsx
 // Добавить loading="lazy" к изображениям
 <img 
@@ -177,6 +196,7 @@ const LazyImage = ({ src, alt }) => (
 ```
 
 **Обновить тест:**
+
 ```typescript
 test('should lazy load images', async ({ page }) => {
   await page.goto('/');
@@ -202,26 +222,30 @@ test('should lazy load images', async ({ page }) => {
 ## 📋 План выполнения
 
 ### Этап 1: Быстрые исправления (1-2 часа)
+
 1. ✅ Добавить `waitForLoadState` и `waitForSelector` во все тесты навигации
 2. ✅ Добавить `data-testid` к формам входа/регистрации
 3. ✅ Исправить responsive тесты на проверку конкретных элементов
 
 ### Этап 2: Контент (2-3 часа)
-4. ⏳ Проверить/добавить контент на страницы Образование и Ветераны
-5. ⏳ Обновить тесты под реальный контент
-6. ⏳ Добавить loading="lazy" к изображениям
+
+1. ⏳ Проверить/добавить контент на страницы Образование и Ветераны
+2. ⏳ Обновить тесты под реальный контент
+3. ⏳ Добавить loading="lazy" к изображениям
 
 ### Этап 3: Доступность (2-3 часа)
-7. ⏳ Исправить иерархию заголовков
-8. ⏳ Добавить ARIA роли
-9. ⏳ Провести аудит контрастности
+
+1. ⏳ Исправить иерархию заголовков
+2. ⏳ Добавить ARIA роли
+3. ⏳ Провести аудит контрастности
 
 ---
 
 ## 🔍 Детальный анализ падающих тестов
 
 ### Navigation (5 тестов)
-```
+
+```text
 ❌ should navigate to home page
 ❌ should navigate through all main pages
 ❌ should have functional mobile menu
@@ -236,7 +260,8 @@ test('should lazy load images', async ({ page }) => {
 ---
 
 ### Admin Panel (4 теста)
-```
+
+```text
 ❌ should display login form
 ❌ should show validation errors on empty submit
 ❌ should display registration form
@@ -250,7 +275,8 @@ test('should lazy load images', async ({ page }) => {
 ---
 
 ### Pages Content (5 тестов)
-```
+
+```text
 ❌ Should display hero section
 ❌ Should display services section
 ❌ should display company information
@@ -265,7 +291,8 @@ test('should lazy load images', async ({ page }) => {
 ---
 
 ### Accessibility (3 теста)
-```
+
+```text
 ❌ should have proper heading hierarchy
 ❌ should have proper ARIA roles
 ❌ should have sufficient color contrast
@@ -278,7 +305,8 @@ test('should lazy load images', async ({ page }) => {
 ---
 
 ### Responsive (6 тестов)
-```
+
+```text
 ❌ should be responsive on Mobile (375x667)
 ❌ should be responsive on Tablet (768x1024)
 ❌ should be responsive on Desktop (1920x1080)
@@ -292,16 +320,19 @@ test('should lazy load images', async ({ page }) => {
 ---
 
 ### Performance (2 теста)
-```
+
+```text
 ❌ should have fast First Contentful Paint
 ❌ should lazy load images
 ```
 
-**Причина:** 
+**Причина:**
+
 - FCP таймаутится из-за медленной загрузки
 - Нет lazy-loaded изображений
 
-**Решение:** 
+**Решение:**
+
 - Увеличить таймауты
 - Добавить loading="lazy"
 - Сделать тесты более гибкими
@@ -311,26 +342,31 @@ test('should lazy load images', async ({ page }) => {
 ## 🎓 Полезные команды
 
 ### Запуск конкретного теста
+
 ```bash
 npx playwright test e2e/navigation.spec.ts -g "should navigate to home"
 ```
 
 ### Запуск с UI
+
 ```bash
 npm run test:e2e:ui
 ```
 
 ### Запуск с отладкой
+
 ```bash
 npm run test:e2e:debug
 ```
 
 ### Просмотр отчета
+
 ```bash
 npm run test:e2e:report
 ```
 
 ### Обновить скриншоты
+
 ```bash
 npx playwright test --update-snapshots
 ```
@@ -339,10 +375,11 @@ npx playwright test --update-snapshots
 
 ## 🎯 Целевые метрики
 
-**Текущее:** 14/40 (35%)  
+**Текущее:** 14/40 (35%)
 **Цель:** 38/40 (95%+)
 
-### Ожидаемые результаты после исправлений:
+### Ожидаемые результаты после исправлений
+
 - ✅ Navigation: 5/5 тестов
 - ✅ Admin Panel: 4/4 теста
 - ✅ Pages Content: 5/5 тестов

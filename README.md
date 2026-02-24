@@ -176,7 +176,7 @@ netlify deploy --prod --dir=dist
 
 ## Скрипты
 
-### Frontend
+### Frontend (app)
 
 ```bash
 npm run dev          # Запуск dev-сервера

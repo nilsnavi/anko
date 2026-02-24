@@ -94,6 +94,7 @@ export const CookieSettings: React.FC<Props> = ({ isOpen, onClose }) => {
                   type="checkbox"
                   checked={true}
                   disabled
+                  aria-label="Обязательные cookies (всегда активны)"
                   className="w-5 h-5 rounded text-brand-600 opacity-50 cursor-not-allowed"
                 />
               </div>
@@ -122,6 +123,7 @@ export const CookieSettings: React.FC<Props> = ({ isOpen, onClose }) => {
                     type="checkbox"
                     checked={settings.analytics}
                     onChange={(e) => setSettings({ ...settings, analytics: e.target.checked })}
+                    aria-label="Аналитические cookies"
                     className="sr-only peer"
                   />
                   <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-brand-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-600"></div>
@@ -152,6 +154,7 @@ export const CookieSettings: React.FC<Props> = ({ isOpen, onClose }) => {
                     type="checkbox"
                     checked={settings.marketing}
                     onChange={(e) => setSettings({ ...settings, marketing: e.target.checked })}
+                    aria-label="Маркетинговые cookies"
                     className="sr-only peer"
                   />
                   <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-brand-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-600"></div>
@@ -182,6 +185,7 @@ export const CookieSettings: React.FC<Props> = ({ isOpen, onClose }) => {
                     type="checkbox"
                     checked={settings.preferences}
                     onChange={(e) => setSettings({ ...settings, preferences: e.target.checked })}
+                    aria-label="Настройки и предпочтения"
                     className="sr-only peer"
                   />
                   <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-brand-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-600"></div>
